@@ -1,24 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const app = express();
-require('/api/index')(app);
+const test = require('../handlers/test');
 
 /* GET home page. */
-/*  router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Message' });
-  //  res.send('message from index.js');
-}); */
-/*  const requestTime = function (req, res, next) {
-  req.requestTime = Date.now();
-  next();
-};
+router.get('/', function(req, res, next){
+  res.send(req);
+  res.redirect('/api/get');
+})
 
-router.use(requestTime);
+router.get('/api/get', test.get);
 
-router.get('/', function (req, res) {
-  const responseText = 'Hello World!';
-  res.send(responseText + 'Requested at: ' + req.requestTime + '');
-  console.log(Date.now());
-});
+router.put('/api/update', test.update);
 
-module.exports = router;  */
+router.post('/api/post', test.post);
+
+module.exports = router;
