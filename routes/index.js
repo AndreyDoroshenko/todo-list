@@ -1,17 +1,10 @@
-const express = require('express');
-const router = express.Router();
-const test = require('../handlers/test');
+const router = require('express').Router();
+const apiRouter = require('./api');
 
-/* GET home page. */
-router.get('/', function(req, res, next){
-  res.send(req);
-  res.redirect('/api/get');
-})
+router.use('/api', apiRouter);
 
-router.get('/api/get', test.get);
-
-router.put('/api/update', test.update);
-
-router.post('/api/post', test.post);
+router.get('/', (req, res) => {
+    res.redirect('/api/test');
+});
 
 module.exports = router;
