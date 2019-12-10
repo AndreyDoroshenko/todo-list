@@ -1,6 +1,6 @@
 const apiRouter = require('express').Router();
-const testRoutes = require('./test');
+const todoList = require('./todoList');
 
-apiRouter.use('/test', testRoutes);
+apiRouter.use('/todo-list', todoList);
 
 module.exports = apiRouter;
