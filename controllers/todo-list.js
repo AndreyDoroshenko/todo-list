@@ -23,15 +23,11 @@ exports.addNewTask = (req, res) => {
        if (err) {
            console.error(err);
        } else {
-           if(result.list.find((line) => line.id === Number(req.params.id))) {
-               res.json({ message: 'task with this id already exists'});
-           } else {
-               result.list.push({id: req.params.id, text: req.query.text, isDone: false});
-               result.save();
-               res.json( result );
+           result.list.push({ text: req.query.text, isDone: false });
+           result.save();
+           res.json({ message: 'done' });
            }
-       }
-   })
+       })
 };
 
 exports.updateTask = (req,res) => {
@@ -40,11 +36,11 @@ exports.updateTask = (req,res) => {
             console.log(err);
         }
         if(result !== null) {
-            const edit = result.list.find((line) => line.id === Number(req.params.id));
+            const edit = result.list.find((line) => line.id === req.params.taskID);
             if(edit) {
                 edit.isDone = !edit.isDone;
                 result.save();
-                res.json( result );
+                res.json({ message: 'done' });
             } else {
                 res.json({ message: 'this task doesn\'t exist'});
             }
@@ -56,15 +52,18 @@ exports.updateTask = (req,res) => {
 
 exports.postUser = (req, res) => {
     list.findOne({username: req.params.username, password: req.query.password}, (err, result) => {
-        if(err){
+        if(err) {
            console.log(err);
         } else {
-            if(result !== null) {
-                res.json({ message: 'this user already exist'});
+            if (result) {
+                res.json({message: 'this user already exist'})
             } else {
                 const taskList = new list({list: [], username: req.params.username, password: req.query.password});
-                console.log(taskList);
-                taskList.save();
+                taskList.save( (error) => {
+                    if(error) {
+                        console.log(error);
+                    }
+                });
             }
         }
     })
@@ -79,7 +78,7 @@ exports.validation = (schema) => {
             next();
         } else {
             console.log("error", error);
-            res.status(400).json({error: error});
+            res.status(400).json(error);
         }
     }
 };

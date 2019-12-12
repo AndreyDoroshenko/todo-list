@@ -5,7 +5,6 @@ const todoList = require('../../controllers/todo-list');
 
 const newTaskSchema = Joi.object().keys({
     params: Joi.object().keys({
-        id: Joi.number().integer().required(),
         username: Joi.string().required()
     }),
     query: Joi.object().keys({
@@ -15,9 +14,11 @@ const newTaskSchema = Joi.object().keys({
 
 const updateTaskSchema = Joi.object().keys({
     params: Joi.object().keys({
-        id: Joi.number().integer().required(),
-        username: Joi.string().required()
-    })
+        username: Joi.string().required(),
+        taskID: Joi.string().required()
+    }),
+    query: Joi.object().keys({
+    }),
 });
 
 const userSchema = Joi.object().keys({
@@ -33,13 +34,16 @@ const getTasksSchema = Joi.object().keys({
     params: Joi.object().keys({
         username: Joi.string().required()
     }),
+    query: Joi.object().keys({
+        password: Joi.string().required()
+    }),
 });
 
 todoListRouter.get('/:username/tasks', todoList.validation(getTasksSchema), todoList.getTasks);
 
-todoListRouter.post('/:username/tasks/:id', todoList.validation(newTaskSchema), todoList.addNewTask);
+todoListRouter.post('/:username/tasks', todoList.validation(newTaskSchema), todoList.addNewTask);
 
-todoListRouter.put('/:username/tasks/:id', todoList.validation(updateTaskSchema), todoList.updateTask);
+todoListRouter.put('/:username/tasks/:taskID', todoList.validation(updateTaskSchema), todoList.updateTask);
 
 todoListRouter.post('/:username', todoList.validation(userSchema), todoList.postUser);
 

@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 
 const listSchema = new mongoose.Schema({
     list: [{
-        id: Number,
         text: String,
         isDone: Boolean
     }],
